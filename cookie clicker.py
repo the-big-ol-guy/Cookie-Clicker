@@ -93,15 +93,15 @@ try:
                 # if it's possible to buy it (i.e. if you have enough cookies to buy it)
                 if numconvert(banked.text) > numconvert(buildingPrice[item].text):
                     # don't even know how to explain this one
-                    if numconvert(buildingPrice[item - 1].text) / (numconvert(output[item - 1]) + 0.001) > \
-                            numconvert(buildingPrice[item].text) / (numconvert(output[item]) + 0.001):
+                    if numconvert(buildingPrice[item - 1].text) / numconvert(buildingPrice[item].text) < \
+                            (numconvert(output[item - 1]) + 0.001) / (numconvert(output[item]) + 0.001):
                         pass
                     else:
                         actions.click(buildingPrice[item]).perform()
                         actions.move_to_element(buildingPrice[item]).perform()
                         sleep(0.2)
                         try:
-                            output[item] = driver.find_element(By.CLASS_NAME, "data").text.split("\n")[0].split(" ")[4]
+                            output[item] = numconvert(driver.find_element(By.CLASS_NAME, "data").text.split("\n")[0].split(" ")[4])
                             sleep(0.2)
                         except StaleElementReferenceException:
                             pass
